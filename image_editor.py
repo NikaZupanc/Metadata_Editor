@@ -17,25 +17,10 @@ def edit_image(file_path: Path, target_date: datetime) -> Path:
     exiftool = shutil.which("exiftool")
 
     if not exiftool:
-        raise RuntimeError(
-            "ExifTool is not installed or is not available in PATH."
-        )
-
-    # Create output file path
-    output_path = file_path.with_name(
-        f"{file_path.stem}_modified{file_path.suffix}"
-    )
-
-    if output_path.exists():
-        raise FileExistsError(
-            f"Output file already exists: {output_path}"
-        )
+        raise RuntimeError( "ExifTool is not installed or is not available in PATH." )
 
     # Format date for EXIF metadata
     formatted_date = target_date.strftime("%Y:%m:%d %H:%M:%S")
-
-    # Preserve the original file
-    shutil.copy2(file_path, output_path)
 
     # Modify EXIF timestamps
     try:
@@ -44,7 +29,7 @@ def edit_image(file_path: Path, target_date: datetime) -> Path:
                 exiftool,
                 "-overwrite_original",
                 f"-AllDates={formatted_date}",
-                str(output_path),
+                str(file_path),
             ],
             capture_output=True,
             text=True,
@@ -52,10 +37,10 @@ def edit_image(file_path: Path, target_date: datetime) -> Path:
         )
 
     except subprocess.CalledProcessError as error:
-        output_path.unlink(missing_ok=True)
+        file_path.unlink(missing_ok=True)
 
-        raise RuntimeError(
-            error.stderr.strip() or "Failed to update EXIF metadata."
-        ) from error
+        raise RuntimeError( error.stderr.strip() or "Failed to update EXIF metadata.") from error
 
-    return output_path
+    return file_path
+
+# exiftool -time:all -G1 -a -s "fotografija_E1168970.jpg"
