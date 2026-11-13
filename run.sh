@@ -28,11 +28,10 @@ else
     PYTHON="$VENV_DIR/bin/python"
 fi
 
-# Install missing dependencies
-if ! "$PYTHON" -c "import rich" >/dev/null 2>&1; then
-    echo "Installing dependencies..."
-    "$PYTHON" -m pip install rich
-fi
+# Install dependencies
+echo "Checking dependencies..."
+"$PYTHON" -m pip install -r requirements.txt --disable-pip-version-check --quiet
+
 
 # Run application
 "$PYTHON" main.py
