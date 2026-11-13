@@ -10,6 +10,7 @@ from rich.text import Text
 
 from image_editor import edit_image
 from filesystem import edit_filesystem
+from pdf_editor import edit_pdf
 
 
 console = Console()
@@ -23,6 +24,7 @@ BACKGROUND = "#202033"
 EDITORS = {
     ".jpg": edit_image,
     ".jpeg": edit_image,
+    ".pdf": edit_pdf,
 }
 
 FILE_TYPES = {

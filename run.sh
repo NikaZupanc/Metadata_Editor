@@ -35,3 +35,4 @@ echo "Checking dependencies..."
 
 # Run application
 "$PYTHON" main.py
+#"$PYTHON" test_comments.py
